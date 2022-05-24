@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Matrix Calculators</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1>Matrix Calculators</h1>
+    <header>
+      <section>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="#e68a00"
+          width="48"
+          height="48"
+          viewBox="-9 -9 40 40"
+        >
+          <path
+            stroke="none"
+            fill-rule="even-odd"
+            d="M29 12 a18 18 0 1 1 0 -0.001"
+          ></path>
+          <path
+            fill="none"
+            stroke="white"
+            stroke-width="1.5"
+            d="M10 2 l-10 5 l10 5 l10 -5 l-10 -5z m-10 15 l10 5 l10 -5 m-20 -5 l10 5 10-5"
+          ></path>
+        </svg>
+        <h2 style="font-size: 26px; padding-left: 8px">
+          Made by Siddharth Kale
+        </h2>
+      </section>
+      <nav id="nav_page">
+        <button onclick="show_part(event);">Home</button>
+        <button onclick="show_part(event);">Add/Subtract</button>
+        <button onclick="show_part(event);">Multiplication</button>
+        <button onclick="show_part(event);">Linear Equation</button>
+      </nav>
+    </header>
+    <main class="bgimg">
+      <section id="Home">
+        <br />
+        This website is developed to solve, analyze and completely study the
+        problems related to matrices. One can obtain a detailed step-by-step
+        solution along with some description for any set of linear equations
+        with any number of variables. This site is very user friendly and is
+        specifically made student-oriented which will definitely help to enhance
+        learning and will bring enthusiasm amongst young learners.
+        <br />
+      </section>
+
+      <section id="Linear_Equation" style="display: none">
+        <form
+          onsubmit="event.preventDefault();event.target.method.value=='Back Substitution Elimination' ? gauss_bs(event.target) : gauss_jordan(event.target);"
+          style="text-align: center"
+        >
+          <br />
+          <p>
+            This will give the solution for the linear equations using
+            <b>Gauss methods</b>.
+          </p>
+          <br />
+          <label>Select the method:</label>
+          <select name="method">
+            <option>Back Substitution Elimination</option>
+            <option>Gauss-Jordan</option>
+          </select>
+          <br />
+          <br />
+          <label>Enter the order of matrix:</label>
+          <input
+            type="number"
+            name="order"
+            required
+            min="2"
+            onchange="gauss_bs_update_order(this.value);"
+            value="3"
+            style="width: 64px"
+          />
+          <div>
+            You have selected <big id="order">3 &times; 3</big> as the
+            dimensions for the matrix.
+          </div>
+          <br />
+          <label>Enter the coefficients: </label>
+          <br />
+          <section id="inputs"></section>
+          <br />
+          <input type="submit" value="Solve" />
+        </form>
+        <br />
+      </section>
+
+      <section id="Multiplication" style="padding: 12px; display: none">
+        <form
+          onsubmit="event.preventDefault();matrix_multiplication_solve(event.target);"
+          style="text-align: center"
+        >
+          <br />
+          <p>
+            This will give the result for <b>multiplication</b> of matrices.
+          </p>
+          <br />
+          <label>Enter the order of matrix 1:</label>
+          <input
+            type="number"
+            name="order1"
+            required
+            min="1"
+            onchange="matrix_multiplication_update_order(this.value,-1,-1);"
+            value="3"
+            style="width: 64px"
+          />
+          <input
+            type="number"
+            name="order2"
+            required
+            min="1"
+            onchange="matrix_multiplication_update_order(-1,this.value,-1);document.getElementById('multiplication_o2_temp').value=this.value"
+            value="3"
+            style="width: 64px"
+          />
+          <br />
+          <label>Enter the order of matrix 2:</label>
+          <input
+            type="text"
+            id="multiplication_o2_temp"
+            value="3"
+            style="width: 64px"
+            readonly
+          />
+          <input
+            type="number"
+            name="order3"
+            required
+            min="1"
+            onchange="matrix_multiplication_update_order(-1,-1,this.value);"
+            value="3"
+            style="width: 64px"
+          />
+          <div>
+            You have selected <big id="order_multiplication"></big> as the
+            dimensions for matrix 1 and 2 respectively.
+          </div>
+          <br />
+          <article
+            id="multiplication_inputs"
+            class="math_equ"
+            style="justify-content: center"
+          >
+            <span id="inputs_multiplication_1"></span> <span> &times; </span>
+            <span id="inputs_multiplication_2"></span>
+          </article>
+          <br />
+          <input type="submit" value="Solve" />
+        </form>
+        <br />
+      </section>
+
+      <section id="Add_Subtract" style="padding: 12px; display: none">
+        <form
+          onsubmit="event.preventDefault();matrix_add_subtract(event.target);"
+          style="text-align: center"
+        >
+          <br />
+          <p>
+            This will give the result for <b>addition or subtraction</b> of
+            matrices.
+          </p>
+          <br />
+          <label>Enter the operation to be performed on both matrices:</label>
+          <select
+            name="operation"
+            id="matrix_operation"
+            onchange="matrix_add_subtract_update_order(-1,-1);"
+          >
+            <option>Addition</option>
+            <option>Subtraction</option>
+          </select>
+          <br />
+          <label>Enter the order for both matrices:</label>
+          <input
+            type="number"
+            name="order1"
+            required
+            min="1"
+            onchange="matrix_add_subtract_update_order(this.value,-1);"
+            value="3"
+            style="width: 64px"
+          />
+          <input
+            type="number"
+            name="order2"
+            required
+            min="1"
+            onchange="matrix_add_subtract_update_order(-1,this.value);"
+            value="3"
+            style="width: 64px"
+          />
+          <div>
+            You have selected <big id="order_add_subtract"></big> as the
+            dimensions for both matrices.
+          </div>
+          <br />
+          <article
+            id="add_subtract_inputs"
+            class="math_equ"
+            style="justify-content: center"
+          >
+            <span id="inputs_add_subtract_1"></span> +
+            <span id="inputs_add_subtract_2"></span>
+          </article>
+          <br />
+          <input type="submit" value="Solve" />
+        </form>
+        <br />
+      </section>
+
+      <section id="solution" style="padding: 12px; display: none"></section>
+    </main>
+  </body>
+
+  <script
+    type="text/javascript"
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+  ></script>
+  <script type="text/javascript" src="style.js"></script>
+  <script type="text/javascript" src="matrix-add-subtract.js"></script>
+  <script type="text/javascript" src="matrix-multiplication.js"></script>
+  <script type="text/javascript" src="gauss.js"></script>
+</html>
